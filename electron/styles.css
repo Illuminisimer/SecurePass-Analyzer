@@ -1,0 +1,151 @@
+body {
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #111827;
+  color: #f8fafc;
+}
+
+header {
+  padding: 24px;
+  text-align: center;
+  background: #1f2937;
+  border-bottom: 1px solid #374151;
+}
+
+h1 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+h2 {
+  margin-top: 0;
+}
+
+main {
+  display: grid;
+  gap: 20px;
+  padding: 24px;
+}
+
+.card {
+  background: #111827;
+  border: 1px solid #374151;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.5);
+}
+
+input,
+textarea,
+button,
+select {
+  font: inherit;
+}
+
+label {
+  display: block;
+  margin-top: 16px;
+  margin-bottom: 8px;
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid #374151;
+  background: #1f2937;
+  color: #f8fafc;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 18px;
+  font-weight: 600;
+  background: #2563eb;
+  color: white;
+}
+
+button.secondary {
+  background: #374151;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.hidden {
+  display: none;
+}
+
+.auth-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.auth-tabs button {
+  flex: 1;
+  background: #1f2937;
+}
+
+.auth-tabs button.active {
+  background: #2563eb;
+}
+
+#vault-list,
+#entry-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.vault-card,
+.entry-card {
+  padding: 16px;
+  border-radius: 14px;
+  background: #111827;
+  border: 1px solid #334155;
+}
+
+.toolbar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.85);
+  display: grid;
+  place-items: center;
+}
+
+.modal-content {
+  width: min(92vw, 600px);
+  background: #111827;
+  border: 1px solid #374151;
+  border-radius: 18px;
+  padding: 24px;
+  position: relative;
+}
+
+.close-button {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: transparent;
+  color: #f8fafc;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.hint {
+  margin-top: 16px;
+  color: #cbd5e1;
+}

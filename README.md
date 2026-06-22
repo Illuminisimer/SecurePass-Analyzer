@@ -14,7 +14,7 @@ This tool checks:
 # 🚀 FEATURES
 
 - GUI-based interface using Tkinter  
-- Password strength scoring system (0–5+)  
+- Password strength scoring system upgraded to a 0–100 ML-backed scale  
 - Detects weak password patterns  
 - Checks personal information inside password:
   - Name  
@@ -24,6 +24,7 @@ This tool checks:
 - Common password blacklist detection  
 - Detailed security report output  
 - Reset and retry functionality  
+- Backend FastAPI analysis endpoint: `/api/analysis/score`  
 
 ---
 
@@ -53,27 +54,91 @@ Compares password with a known list of weak/common passwords.
 
 ---
 
+# 📁 PROJECT STRUCTURE
+
+SecurePasswordAnalyzer/
+
+- main.py  
+- common_passwords.txt  
+- requirements.txt  
+- README.md
+- screenshot.png  
+
+---
 
 # 📦 REQUIREMENTS
 
-No external libraries required.
+This project now includes a FastAPI backend and a Next.js frontend.
 
-Built-in Python module used:
+Backend requirements:
+- Python 3.11+ (recommended)
+- `pip` for Python package installation
 
-- tkinter  
+Frontend requirements:
+- Node.js 20+
+- npm or yarn
 
 ---
 
 # ⚙️ INSTALLATION & USAGE
 
-Clone repository:
-git clone https://github.com/your-username/SecurePasswordAnalyzer.git
+## Backend
 
-Go to project folder:
-cd SecurePasswordAnalyzer
+1. Open PowerShell in the repository root:
+   `cd d:\SecurePass-Analyzer`
+2. Activate the Python virtual environment:
+   `.\.venv\Scripts\Activate`
+3. Install backend dependencies:
+   `pip install -r backend/requirements.txt`
+4. Start the FastAPI server:
+   `uvicorn backend.app.main:app --reload --host 127.0.0.1 --port 8000`
+5. Confirm the backend is running at:
+   `http://127.0.0.1:8000`
 
-Run project:
-python main.py
+## Frontend
+
+1. Open PowerShell in the frontend folder:
+   `cd d:\SecurePass-Analyzer\frontend`
+2. Install frontend dependencies:
+   `npm install`
+3. Start the Next.js development server:
+   `npm run dev`
+4. Open the app in your browser at:
+   `http://127.0.0.1:3000`
+
+## Desktop wrapper (optional)
+
+A desktop Electron wrapper exists under `electron/` if you want a packaged app.
+
+## UX Instructions
+
+1. Open the frontend at `http://127.0.0.1:3000`.
+2. Go to **Login** and register a new account with email and a strong master password.
+3. After login, open the **Vault** dashboard.
+4. Create a vault, then add entries using a title, username, URL, password, and optional notes.
+5. To read a stored password, click **Decrypt** and enter your master password.
+6. Enable multi-factor authentication at `/2fa` to generate a TOTP QR code and backup codes.
+7. Visit `/assistant` for AI-driven password and security recommendations.
+
+---
+
+# �️ TROUBLESHOOTING
+
+- If `uvicorn` is not found, ensure the virtual environment is activated and run `pip install -r backend/requirements.txt`.
+- If `next` is not recognized, run `npm install` from `d:\SecurePass-Analyzer\frontend` and try `npm run dev` again.
+- If the frontend cannot reach the backend, confirm `NEXT_PUBLIC_API_BASE` is set to `http://127.0.0.1:8000/api` and both servers are running.
+- If login fails with a 401 error after registration, clear browser local storage and re-login.
+- If 2FA setup returns an invalid code error, verify the TOTP app is synced and use the current code.
+- If `npm install` reports vulnerabilities, run `npm audit fix` for safe fixes and `npm audit` to review remaining warnings before upgrading packages.
+
+---
+
+# 🔐 RECOMMENDED SECURITY
+
+- Keep backend dependencies current and rerun `pip install -r backend/requirements.txt` after updates.
+- Use a virtual environment for Python to isolate backend packages.
+- Keep frontend packages up to date and verify `next`, `react`, and `eslint` versions when upgrading.
+- Prefer `npm audit fix` for non-breaking updates and only use `npm audit fix --force` after review.
 
 ---
 

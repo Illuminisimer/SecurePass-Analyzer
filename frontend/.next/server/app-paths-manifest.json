@@ -1,0 +1,8 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/assistant/page": "app/assistant/page.js",
+  "/vault/page": "app/vault/page.js",
+  "/page": "app/page.js",
+  "/2fa/page": "app/2fa/page.js",
+  "/login/page": "app/login/page.js"
+}

@@ -1,0 +1,12 @@
+{
+  "name": "securepass-electron",
+  "version": "0.1.0",
+  "description": "SecurePass Analyzer Electron frontend",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "^26.0.0"
+  }
+}

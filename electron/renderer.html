@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SecurePass Analyzer</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <h1>SecurePass Analyzer</h1>
+      <p>Enterprise password manager frontend</p>
+    </header>
+
+    <main>
+      <section id="auth-section">
+        <div class="card">
+          <h2>Authentication</h2>
+          <div class="auth-tabs">
+            <button id="login-tab" class="active">Login</button>
+            <button id="register-tab">Register</button>
+          </div>
+          <form id="auth-form">
+            <label>Email</label>
+            <input type="email" id="auth-email" required />
+
+            <label>Master Password</label>
+            <input type="password" id="auth-password" required minlength="12" />
+
+            <div id="register-extra" class="hidden">
+              <label>Confirm Password</label>
+              <input
+                type="password"
+                id="auth-confirm-password"
+                minlength="12"
+              />
+            </div>
+
+            <button type="submit" id="auth-submit">Login</button>
+            <p class="hint" id="auth-hint">
+              Enter your account credentials to sign in.
+            </p>
+          </form>
+        </div>
+      </section>
+
+      <section id="vault-section" class="hidden">
+        <div class="card">
+          <h2>Your Vaults</h2>
+          <div class="toolbar">
+            <button id="refresh-vaults">Refresh Vaults</button>
+            <button id="new-vault-button">New Vault</button>
+          </div>
+          <div id="vault-list"></div>
+        </div>
+
+        <div class="card hidden" id="entries-card">
+          <h2>Vault Entries</h2>
+          <div id="vault-name"></div>
+          <div id="entry-list"></div>
+          <button id="add-entry-button">Add Entry</button>
+        </div>
+      </section>
+    </main>
+
+    <div id="modal" class="modal hidden">
+      <div class="modal-content">
+        <button class="close-button" id="close-modal">×</button>
+        <div id="modal-body"></div>
+      </div>
+    </div>
+
+    <script src="renderer.js"></script>
+  </body>
+</html>
