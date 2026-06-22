@@ -53,17 +53,6 @@ Compares password with a known list of weak/common passwords.
 
 ---
 
-# 📁 PROJECT STRUCTURE
-
-SecurePasswordAnalyzer/
-
-- main.py  
-- common_passwords.txt  
-- requirements.txt  
-- README.md
-- screenshot.png  
-
----
 
 # 📦 REQUIREMENTS
 
