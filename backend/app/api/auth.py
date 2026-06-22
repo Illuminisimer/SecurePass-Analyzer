@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+
 from datetime import datetime, timedelta
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -76,6 +77,19 @@ async def login_user(request: LoginRequest, session: AsyncSession = Depends(get_
     return TokenResponse(access_token=access_token, expires_at=None)
 
 
+async def get_current_user(token: str = Depends(oauth2_scheme), session: AsyncSession = Depends(get_db)):
+    try:
+        payload = verify_access_token(token)
+        user_id = int(payload.get("sub"))
+    except Exception:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
+
+    user = await session.get(User, user_id)
+    if user is None:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found")
+    return use
+
+
 @router.get("/me", response_model=UserProfileResponse)
 async def get_user_profile(current_user: User = Depends(get_current_user)) -> UserProfileResponse:
     return UserProfileResponse(
@@ -88,14 +102,4 @@ async def get_user_profile(current_user: User = Depends(get_current_user)) -> Us
     )
 
 
-async def get_current_user(token: str = Depends(oauth2_scheme), session: AsyncSession = Depends(get_db)):
-    try:
-        payload = verify_access_token(token)
-        user_id = int(payload.get("sub"))
-    except Exception:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
 
-    user = await session.get(User, user_id)
-    if user is None:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found")
-    return user
