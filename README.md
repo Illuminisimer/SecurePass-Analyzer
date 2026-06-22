@@ -189,7 +189,7 @@ This dataset is widely used in cybersecurity research and penetration testing.
 - 🔗 Facebook: https://www.facebook.com/say.yashh 
 
 # 2. Ahnaf Wasi Azad (Full stack developer)
-- Created the entire forntend, backend and the desktop wrapper
+- Created the entire frontend, backend and the desktop wrapper
 - implemented database
 - security checks
 - improved the overall tool
