@@ -1,5 +1,7 @@
 import tkinter as tk
 
+from backend.app.services.analysis import PasswordStrengthAnalyzer
+
 # ---------------- WINDOW ----------------
 root = tk.Tk()
 root.title("Secure Password Analyzer")
@@ -33,118 +35,44 @@ output.pack()
 # ---------------- CHECK PASSWORD ----------------
 def check_password():
     password = password_entry.get()
-    name = name_entry.get().lower()
-    username = username_entry.get().lower()
-    email = email_entry.get().lower()
-    dob = dob_entry.get()
+    name = name_entry.get().strip()
+    username = username_entry.get().strip()
+    email = email_entry.get().strip()
+    dob = dob_entry.get().strip()
 
-    score = 0
     output.delete("1.0", tk.END)
-
     output.insert(tk.END, "🔐 PASSWORD SECURITY REPORT\n")
     output.insert(tk.END, "================================\n")
 
-    # ---------------- BASIC CHECKS ----------------
-    if len(password) >= 8:
-        score += 1
-        output.insert(tk.END, "✔ Length OK\n")
-    else:
-        output.insert(tk.END, "✘ Too short (min 8)\n")
+    analyzer = PasswordStrengthAnalyzer()
+    result = analyzer.analyze_password(
+        password,
+        name=name,
+        username=username,
+        email=email,
+        dob=dob,
+    )
 
-    if any(c.isupper() for c in password):
-        score += 1
-        output.insert(tk.END, "✔ Uppercase found\n")
-    else:
-        output.insert(tk.END, "✘ Missing uppercase\n")
-
-    if any(c.islower() for c in password):
-        score += 1
-        output.insert(tk.END, "✔ Lowercase found\n")
-    else:
-        output.insert(tk.END, "✘ Missing lowercase\n")
-
-    if any(c.isdigit() for c in password):
-        score += 1
-        output.insert(tk.END, "✔ Digit found\n")
-    else:
-        output.insert(tk.END, "✘ Missing digit\n")
-
-    special = "!@#$%^&*()-_=+[]{}|\\:;\"'<>,.?/"
-    if any(c in special for c in password):
-        score += 1
-        output.insert(tk.END, "✔ Special character found\n")
-    else:
-        output.insert(tk.END, "✘ Missing special character\n")
-
-    # ---------------- COMMON PASSWORD CHECK ----------------
-    output.insert(tk.END, "\n--- Common Password Check ---\n")
-
-    try:
-        with open("common_passwords.txt", "r") as file:
-            common_passwords = set(file.read().splitlines())
-
-        if password.lower() in common_passwords:
-            output.insert(tk.END, "✘ This is a COMMON password\n")
-            score -= 2
-        else:
-            output.insert(tk.END, "✔ Not in common password list\n")
-
-    except FileNotFoundError:
-        output.insert(tk.END, "⚠ common_passwords.txt not found\n")
-
-    # ---------------- PERSONAL INFO CHECK ----------------
-    output.insert(tk.END, "\n--- Personal Info Check ---\n")
-
-    email_prefix = email.split("@")[0] if "@" in email else email
-
-    found_issue = False
-    name_found = False
-
-    if username and username in password.lower():
-        output.insert(tk.END, "✘ Contains username\n")
-        found_issue = True
-    else:
-        output.insert(tk.END, "✔ Username NOT found\n")
-
-    for part in name.split():
-        if part and part in password.lower():
-            output.insert(tk.END, f"✘ Contains name part: {part}\n")
-            found_issue = True
-            name_found = True
-
-    if not name_found:
-        output.insert(tk.END, "✔ Name NOT found\n")
-
-    if email_prefix and email_prefix in password.lower():
-        output.insert(tk.END, "✘ Contains email prefix\n")
-        found_issue = True
-    else:
-        output.insert(tk.END, "✔ Email prefix NOT found\n")
-
-    if dob and dob in password:
-        output.insert(tk.END, "✘ Contains DOB\n")
-        found_issue = True
-    else:
-        output.insert(tk.END, "✔ DOB NOT found\n")
-
+    output.insert(tk.END, f"Score: {result['score']} / 100\n")
+    output.insert(tk.END, f"Grade: {result['grade']}\n")
+    output.insert(tk.END, f"Entropy: {result['entropy']} bits\n")
+    output.insert(tk.END, f"Confidence: {result['ml_confidence'] * 100:.0f}%\n")
     output.insert(tk.END, "================================\n")
 
-    if found_issue:
-        score -= 2
-        output.insert(tk.END, "⚠ Personal Info Risk Detected\n")
-    else:
-        output.insert(tk.END, "✔ No Personal Info Found (Safe)\n")
+    output.insert(tk.END, "Reasons:\n")
+    for reason in result["reasons"]:
+        output.insert(tk.END, f"- {reason}\n")
 
-    # ---------------- FINAL SCORE ----------------
-    output.insert(tk.END, "\n================================\n")
-    output.insert(tk.END, f"Score: {score}/5\n")
+    output.insert(tk.END, "\nSuggestions:\n")
+    for suggestion in result["suggestions"]:
+        output.insert(tk.END, f"- {suggestion}\n")
 
-    if score <= 2:
-        output.insert(tk.END, "Strength: WEAK\n")
-    elif score <= 4:
-        output.insert(tk.END, "Strength: MEDIUM\n")
-    else:
-        output.insert(tk.END, "Strength: STRONG\n")
+    if result["common_password"]:
+        output.insert(tk.END, "\n⚠ Warning: This password is found in common password lists.\n")
+
+    if result["personal_info_matches"]:
+        output.insert(tk.END, "\n⚠ Personal information detected in password: ")
+        output.insert(tk.END, ", ".join(result["personal_info_matches"]) + "\n")
 
 # ---------------- RESET FUNCTION ----------------
 def reset():
